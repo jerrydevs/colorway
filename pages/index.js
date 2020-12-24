@@ -1,65 +1,151 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useState } from 'react'
+import styled, { ThemeProvider } from 'styled-components'
+import toast, { Toaster } from 'react-hot-toast'
+import Router from 'next/router'
+import {
+  OliviaTheme,
+  AzureTheme,
+  NightSakuraTheme,
+  OniTheme,
+  PortTheme,
+  IslanderTheme,
+  BushidoTheme,
+  NautilusTheme,
+  NoelTheme,
+  DarlingTheme,
+} from '../components/Themes'
 
-export default function Home() {
+import Header from '../components/Header'
+import SubHeader from '../components/SubHeader'
+import ColorwayCard from '../components/ColorwayCard'
+import themes from '../styles/colors'
+
+const handleThemeChange = (cb) => {
+  if (window.location.hash) {
+    const href = Router.route
+    const as = href
+    Router.push(href, as, { shallow: true }).then(() => {
+      cb()
+    })
+  } else {
+    cb()
+  }
+}
+
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Container = styled.div``
+
+const PageContainer = styled.main`
+  display: flex;
+  width: 70%;
+  flex: column;
+  justify-content: center;
+  width: 100%;
+  color: ${({ theme }) => theme.fontColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
+  a {
+    transition: color 0.2s linear;
+    color: ${({ theme }) => theme.fontColor};
+    :hover {
+      color: ${({ theme }) => theme.accentColor};
+    }
+  }
+  body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.backgroundColor};
+    outline: 1px solid ${({ theme }) => theme.primaryColor};
+  }
+`
+
+function HomePage({ theme, route, updateTheme }) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <ThemeProvider theme={theme}>
+        <PageContainer>
+          <Main>
+            <Header>Colorway</Header>
+            <SubHeader>Find color inspiration from popular keycap sets.</SubHeader>
+            <Container>
+              {/* GMK Olivia */}
+              <ColorwayCard
+                colorway={themes.Olivia}
+                onThemeChange={() => handleThemeChange(() => updateTheme(OliviaTheme))}
+              />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+              {/* JTK Night Sakura */}
+              <ColorwayCard
+                colorway={themes.NightSakura}
+                onThemeChange={() => handleThemeChange(() => updateTheme(NightSakuraTheme))}
+              />
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+              {/* JTK Azure */}
+              <ColorwayCard
+                colorway={themes.Azure}
+                onThemeChange={() => handleThemeChange(() => updateTheme(AzureTheme))}
+              />
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+              {/* GMK Oni */}
+              <ColorwayCard
+                colorway={themes.Oni}
+                onThemeChange={() => handleThemeChange(() => updateTheme(OniTheme))}
+              />
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+              {/* Infinikey Port */}
+              <ColorwayCard
+                colorway={themes.Port}
+                onThemeChange={() => handleThemeChange(() => updateTheme(PortTheme))}
+              />
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+              {/* Infinikey Islander */}
+              <ColorwayCard
+                colorway={themes.Islander}
+                onThemeChange={() => handleThemeChange(() => updateTheme(IslanderTheme))}
+              />
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+              {/* GMK Bushido */}
+              <ColorwayCard
+                colorway={themes.Bushido}
+                onThemeChange={() => handleThemeChange(() => updateTheme(BushidoTheme))}
+              />
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+              {/* GMK Nautilus */}
+              <ColorwayCard
+                colorway={themes.Nautilus}
+                onThemeChange={() => handleThemeChange(() => updateTheme(NautilusTheme))}
+              />
+
+              {/* GMK Noel */}
+              <ColorwayCard
+                colorway={themes.Noel}
+                onThemeChange={() => handleThemeChange(() => updateTheme(NoelTheme))}
+              />
+
+              {/* GMK Darling */}
+              <ColorwayCard
+                colorway={themes.Darling}
+                onThemeChange={() => handleThemeChange(() => updateTheme(DarlingTheme))}
+              />
+            </Container>
+            <Toaster
+              position='bottom-center'
+              toastOptions={{
+                style: {
+                  background: theme.secondaryColor,
+                },
+              }}
+            />
+          </Main>
+        </PageContainer>
+      </ThemeProvider>
+    </>
   )
 }
+
+export default HomePage
