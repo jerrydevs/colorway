@@ -166,7 +166,7 @@ export default {
       primary: '#95A1B0',
       secondary: '#22272E',
       accent: '#FE578A',
-      accent: '#68C4E5',
+      accent2: '#68C4E5',
     },
     images: ['/images/800821.png'],
   },

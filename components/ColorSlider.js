@@ -1,57 +1,66 @@
-import React, { useContext, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { Clipboard } from 'phosphor-react'
-import Color from 'color'
-import toast from 'react-hot-toast'
+import chroma from 'chroma-js'
+import { useSpring, animated } from 'react-spring'
 
-import { calculateAccentHoverColor } from './Themes'
+import ColorBox from './ColorBox'
+import { getStyledSystemColors } from '../utils/getStyledSystemColors'
 
-const Slider = styled.div`
+const StyledSystemSlider = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  height: 10rem;
+  /* height: 50rem; */
+  height: auto;
+  border-radius: 1rem;
 `
 
-async function copyToClipboard(text) {
-  try {
-    await navigator.clipboard.writeText(text)
-  } catch (error) {
-    console.error('Failed to copy to clipboard: ', error)
+function ColorSlider({ color, theme, showStyledSystemColors }) {
+  const [colorChroma, setColorChroma] = useState(chroma(color))
+  const [styledSystemColors, setStyledSystemColors] = useState([])
+
+  useEffect(() => {
+    const styledSystemColors = getStyledSystemColors(colorChroma)
+    setStyledSystemColors(styledSystemColors)
+  }, [showStyledSystemColors])
+
+  const duration = 300
+
+  const transitionStyles = {
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0 },
+    exited: { opacity: 0 },
   }
-}
-
-function ColorSlider({ color, theme, fullColors }) {
-  const [showControls, setShowControls] = useState(false)
-
-  const themeContext = useContext(ThemeContext)
-  let background = Color(color)
-  const isDark = background.isDark()
-  const contrastedColor = isDark ? themeContext.white : themeContext.black
-  const copyNotification = () =>
-    toast(`Copied ${color.toUpperCase()}`, {
-      color: themeContext.fontColor,
-      background: themeContext.backgroundColor,
-    })
-
   return (
-    <Slider
-      style={{ backgroundColor: color }}
-      onMouseEnter={() => setShowControls(true)}
-      onMouseLeave={() => setShowControls(false)}
-      onClick={copyNotification}
-    >
-      <Clipboard
-        size={24}
-        color={contrastedColor}
-        hidden={!showControls}
-        onClick={() => copyToClipboard(color)}
-      />
-      <p style={{ color: contrastedColor, fontWeight: 'bold' }}>{color.slice(1).toUpperCase()}</p>
-    </Slider>
+    <>
+        {showStyledSystemColors ? (
+          <StyledSystemSlider>
+            {styledSystemColors.map((color, idx) => (
+              <ColorBox color={color.hex()} key={color.hex()} />
+            ))}
+          </StyledSystemSlider>
+        ) : (
+          <ColorBox color={color} />
+        )}
+    </>
   )
+
+  // return (
+  //   <>
+  //     {showStyledSystemColors ? (
+  //       <StyledSystemSlider>
+  //         {styledSystemColors.map((color, idx) => (
+  //           <ColorBox color={color.hex()} key={color.hex()} />
+  //         ))}
+  //       </StyledSystemSlider>
+  //     ) : (
+  //       <ColorBox color={color} />
+  //     )}
+  //   </>
+  // )
 }
 
 export default ColorSlider

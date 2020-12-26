@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
+import toast from 'react-hot-toast'
+import { Transition } from 'react-transition-group'
 
 import Button from './Button'
 import ColorSlider from './ColorSlider'
+import { getColorsCSSVars } from '../utils/getColorsCSSVars'
+import { getColorsJSON } from '../utils/getColorsJSON'
+import { copyToClipboard } from '../utils/copyToClipboard'
 
 const Title = styled.h2`
   margin-bottom: 1.5rem;
@@ -11,14 +16,10 @@ const Title = styled.h2`
   color: ${({ theme }) => theme.fontColor};
 `
 
-const Description = styled.h3`
-  font-size: 2rem;
-  color: ${({ theme }) => theme.fontColor};
-`
-
 const Card = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   width: 100%;
   margin-top: 10rem;
   background-color: ${({ theme }) => theme.backgroundSecondaryColor};
@@ -42,12 +43,27 @@ const ColorsDisplay = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   margin-bottom: 1rem;
-  border: 2px solid ${({ theme }) => theme.flareColor};
-  border-radius: 1rem;
+  overflow: hidden;
+  border: 0.5rem solid ${({ theme }) => theme.flareColor};
+  border-radius: 0.5rem;
 `
 
 function ColorwayCard({ colorway, onThemeChange }) {
-  const [fullColorsToggle, setFullColorsToggle] = useState(false)
+  const [showStyledSystemColors, setShowStyledSystemColors] = useState(false)
+
+  function handleCopyAsJSON() {
+    const colorsJSON = getColorsJSON(colorway.colors)
+    const JSONString = JSON.stringify(colorsJSON, null, 2)
+    // console.log(JSONString)
+    copyToClipboard(JSONString)
+    toast('Copied as JSON')
+  }
+
+  function handleCopyAsCSSVars() {
+    const colorsCSS = getColorsCSSVars(colorway.colors)
+    copyToClipboard(colorsCSS)
+    toast('Copied as CSS Variables')
+  }
 
   const { name, maker, description, images } = colorway
   return (
@@ -56,18 +72,40 @@ function ColorwayCard({ colorway, onThemeChange }) {
         {maker} {name}
       </Title>
 
-      <Image src={images[0]} alt={description} width='400' height='300' layout='intrinsic' />
+      <Image src={images[0]} alt={description} height='350' width='500' layout='intrinsic' />
 
       <ControlsSection>
-        <Button onClick={() => setFullColorsToggle(!fullColorsToggle)}>Toggle Full Colors</Button>
-        <Button>Copy to Clipboard</Button>
+        <Button onClick={() => setShowStyledSystemColors(!showStyledSystemColors)}>
+          See Full Colors
+        </Button>
+        <Button onClick={handleCopyAsJSON}>Copy as JSON</Button>
+        <Button onClick={handleCopyAsCSSVars}>Copy as CSS Vars</Button>
       </ControlsSection>
 
-      <ColorsDisplay>
-        {Object.values(colorway.colors).map((color) => (
-          <ColorSlider color={color} key={color} fullColors={fullColorsToggle} />
+      <Transition in={showStyledSystemColors} timeout={300}>
+        {(state) => (
+          <ColorsDisplay>
+            {Object.values(colorway.colors).map((color, idx) => (
+              <ColorSlider
+                color={color}
+                key={color}
+                showStyledSystemColors={showStyledSystemColors}
+                index={idx}
+              />
+            ))}
+          </ColorsDisplay>
+        )}
+      </Transition>
+      {/* <ColorsDisplay props={props.height}>
+        {Object.values(colorway.colors).map((color, idx) => (
+          <ColorSlider
+            color={color}
+            key={color}
+            showStyledSystemColors={showStyledSystemColors}
+            index={idx}
+          />
         ))}
-      </ColorsDisplay>
+      </ColorsDisplay> */}
 
       <Button onClick={() => onThemeChange()}>Try {name}</Button>
     </Card>

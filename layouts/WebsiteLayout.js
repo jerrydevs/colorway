@@ -4,7 +4,6 @@ import Color from 'color'
 
 const StyledContainer = styled.div`
   background-color: ${({ theme }) => theme.pageContentSelectionColor};
-  overflow: hidden;
   * ::selection {
     background: ${({ theme }) => theme.pageContentSelectionColor};
   }

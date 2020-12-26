@@ -2,29 +2,20 @@ import Color from 'color'
 import Themes from '../styles/colors'
 
 const calculateAccentColor = (bgColor) => {
-  // Calculate a hover color lighter or darker than background
-  // based on how bright the background color is
   const newColor = Color(bgColor)
   const luminosity = newColor.luminosity()
 
-  // The background color is light, so the accent color must be darkened
   if (luminosity > 0.25) return newColor.darken(0.1).hex()
 
-  // The background is dark, so the accent color must be lightened
   return newColor.lighten(0.2).hex()
 }
 
 const calculateAccentHoverColor = (bgColor) => {
-  // Calculate a hover color lighter or darker than background
-  // based on how bright the background color is
   const newColor = Color(bgColor)
   const luminosity = newColor.luminosity()
 
-  // The background color is light, so the hover color must be darkened
   if (luminosity < 0.25) return newColor.darken(0.1).hex()
 
-  // The background accent color is dark, so the hover color must be lighter
-  // Using the regular default background color is usually fine
   return newColor.hex()
 }
 
@@ -38,7 +29,7 @@ const generatePageTheme = ({
 }) => ({
   autoAccentColor: calculateAccentColor(backgroundColor),
   autoAccentHoverColor: calculateAccentHoverColor(backgroundColor),
-  pageContentWidth: 740,
+  pageContentWidth: 850,
   breakpoints: {
     mobileNav: 'min-width: 1061px',
     desktopNav: 'max-width: 1060px',
@@ -57,16 +48,6 @@ const defaultTheme = generatePageTheme({
   fontColor: 'white',
   highlightFontColor: 'cyan',
   backgroundColor: '#000',
-})
-
-const darkTheme = generatePageTheme({
-  fontColor: '#e2e5ec',
-  highlightFontColor: 'aquamarine',
-  backgroundColor: '#101010',
-  override: {
-    accentColor: '#1f1f1f',
-    pageContentSelectionColor: 'aquamarine',
-  },
 })
 
 const OliviaTheme = generatePageTheme({
@@ -140,11 +121,66 @@ const DarlingTheme = generatePageTheme({
   accentColor: Themes.Darling.colors.accent,
 })
 
+const HyperfuseTheme = generatePageTheme({
+  backgroundColor: Themes.Hyperfuse.colors.secondary,
+  backgroundSecondaryColor: Themes.Hyperfuse.colors.primary,
+  fontColor: Themes.Hyperfuse.colors.accent,
+  accentColor: Themes.Hyperfuse.colors.accent,
+  flareColor: Themes.Hyperfuse.colors.accent2,
+})
+
+const MizuTheme = generatePageTheme({
+  backgroundColor: Themes.Mizu.colors.primary,
+  fontColor: Themes.Mizu.colors.secondary,
+  accentColor: Themes.Mizu.colors.accent,
+})
+
+const BentoTheme = generatePageTheme({
+  backgroundColor: Themes.Bento.colors.primary,
+  fontColor: Themes.Bento.colors.secondary,
+  accentColor: Themes.Bento.colors.accent,
+})
+
+const NightrunnerTheme = generatePageTheme({
+  backgroundColor: Themes.Nightrunner.colors.primary,
+  backgroundSecondaryColor: Themes.Nightrunner.colors.secondary,
+  fontColor: Themes.Nightrunner.colors.accent,
+  accentColor: Themes.Nightrunner.colors.accent,
+})
+
+const EightOhOhEightTheme = generatePageTheme({
+  backgroundColor: Themes.EightOhOhEight.colors.primary,
+  backgroundSecondaryColor: Themes.EightOhOhEight.colors.secondary,
+  fontColor: Themes.EightOhOhEight.colors.accent,
+  accentColor: Themes.EightOhOhEight.colors.accent,
+  flareColor: Themes.EightOhOhEight.colors.accent2,
+})
+
+const CafeTheme = generatePageTheme({
+  backgroundColor: Themes.Cafe.colors.primary,
+  fontColor: Themes.Cafe.colors.secondary,
+  accentColor: Themes.Cafe.colors.accent,
+})
+
+const RudyTheme = generatePageTheme({
+  backgroundColor: Themes.Rudy.colors.primary,
+  backgroundSecondaryColor: Themes.Rudy.colors.secondary,
+  fontColor: Themes.Rudy.colors.accent,
+  accentColor: Themes.Rudy.colors.accent,
+})
+
+const UmbraTheme = generatePageTheme({
+  backgroundColor: Themes.Umbra.colors.primary,
+  backgroundSecondaryColor: Themes.Umbra.colors.secondary,
+  fontColor: Themes.Umbra.colors.accent,
+  accentColor: Themes.Umbra.colors.accent2,
+  flareColor: Themes.Umbra.colors.accent3,
+})
+
 export {
   generatePageTheme,
   calculateAccentHoverColor,
   calculateAccentColor,
-  darkTheme,
   OliviaTheme,
   AzureTheme,
   NightSakuraTheme,
@@ -156,5 +192,13 @@ export {
   NautilusTheme,
   NoelTheme,
   DarlingTheme,
+  HyperfuseTheme,
+  MizuTheme,
+  BentoTheme,
+  NightrunnerTheme,
+  EightOhOhEightTheme,
+  CafeTheme,
+  RudyTheme,
+  UmbraTheme,
 }
 export default defaultTheme

@@ -9,6 +9,8 @@ const ThemedHeader = styled.h1`
   padding-top: 3rem;
 `
 
-export default function Header({children}) {
+function Header({children}) {
   return <ThemedHeader>{children}</ThemedHeader>
 }
+
+export default Header
