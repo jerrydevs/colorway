@@ -82,7 +82,7 @@ function ColorwayCard({ colorway, onThemeChange }) {
         <Button onClick={handleCopyAsCSSVars}>Copy as CSS Vars</Button>
       </ControlsSection>
 
-      <Transition in={showStyledSystemColors} timeout={300}>
+      {/* <Transition in={showStyledSystemColors} timeout={300}>
         {(state) => (
           <ColorsDisplay>
             {Object.values(colorway.colors).map((color, idx) => (
@@ -95,8 +95,8 @@ function ColorwayCard({ colorway, onThemeChange }) {
             ))}
           </ColorsDisplay>
         )}
-      </Transition>
-      {/* <ColorsDisplay props={props.height}>
+      </Transition> */}
+      <ColorsDisplay>
         {Object.values(colorway.colors).map((color, idx) => (
           <ColorSlider
             color={color}
@@ -105,7 +105,7 @@ function ColorwayCard({ colorway, onThemeChange }) {
             index={idx}
           />
         ))}
-      </ColorsDisplay> */}
+      </ColorsDisplay>
 
       <Button onClick={() => onThemeChange()}>Try {name}</Button>
     </Card>

@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from 'styled-components'
 
 import WebsiteLayout from '../layouts/WebsiteLayout'
 import appTheme from '../components/Themes'
-import GlobalStyles from '../components/globalStyles'
+import GlobalStyles from '../components/GlobalStyles'
 
 function WebApp({ Component, pageProps, router }) {
   const [dynamicPageThemes, setDynamicPageThemes] = useState([])

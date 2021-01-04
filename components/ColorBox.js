@@ -38,7 +38,7 @@ function ColorBox({ color, ...props }) {
         color={contrastedColor}
         hidden={!showControls}
         onClick={handleCopyColor}
-        style={{ transition: '0.3s' }}
+        style={{ transition: '0.3s', cursor: 'pointer' }}
       />
       <p style={{ color: contrastedColor, fontWeight: 'bold' }}>{color.slice(1).toUpperCase()}</p>
     </StyledBox>
